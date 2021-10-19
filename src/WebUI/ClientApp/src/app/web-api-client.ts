@@ -238,7 +238,7 @@ export class PhoneBookClient implements IPhoneBookClient {
 }
 
 export interface IPhoneBookEntryClient {
-    getTodoItemsWithPagination(listId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfPhoneBookEntryDto>;
+    getTodoItemsWithPagination(phoneBookId: number | undefined, pageNumber: number | undefined, searchParameter: string | null | undefined, pageSize: number | undefined): Observable<PaginatedListOfPhoneBookEntryDto>;
     create(command: CreatePhoneBookEntryCommand): Observable<number>;
     update(id: number, command: UpdatePhoneBookCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
@@ -257,16 +257,18 @@ export class PhoneBookEntryClient implements IPhoneBookEntryClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getTodoItemsWithPagination(listId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfPhoneBookEntryDto> {
+    getTodoItemsWithPagination(phoneBookId: number | undefined, pageNumber: number | undefined, searchParameter: string | null | undefined, pageSize: number | undefined): Observable<PaginatedListOfPhoneBookEntryDto> {
         let url_ = this.baseUrl + "/api/PhoneBookEntry?";
-        if (listId === null)
-            throw new Error("The parameter 'listId' cannot be null.");
-        else if (listId !== undefined)
-            url_ += "ListId=" + encodeURIComponent("" + listId) + "&";
+        if (phoneBookId === null)
+            throw new Error("The parameter 'phoneBookId' cannot be null.");
+        else if (phoneBookId !== undefined)
+            url_ += "PhoneBookId=" + encodeURIComponent("" + phoneBookId) + "&";
         if (pageNumber === null)
             throw new Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
             url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (searchParameter !== undefined && searchParameter !== null)
+            url_ += "SearchParameter=" + encodeURIComponent("" + searchParameter) + "&";
         if (pageSize === null)
             throw new Error("The parameter 'pageSize' cannot be null.");
         else if (pageSize !== undefined)
@@ -1203,9 +1205,9 @@ export interface IPhoneBookDto {
 
 export class PhoneBookEntryDto implements IPhoneBookEntryDto {
     id?: number;
-    listId?: number;
-    title?: string | undefined;
-    note?: string | undefined;
+    phoneBookId?: number;
+    name?: string | undefined;
+    number?: string | undefined;
 
     constructor(data?: IPhoneBookEntryDto) {
         if (data) {
@@ -1219,9 +1221,9 @@ export class PhoneBookEntryDto implements IPhoneBookEntryDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.listId = _data["listId"];
-            this.title = _data["title"];
-            this.note = _data["note"];
+            this.phoneBookId = _data["phoneBookId"];
+            this.name = _data["name"];
+            this.number = _data["number"];
         }
     }
 
@@ -1235,18 +1237,18 @@ export class PhoneBookEntryDto implements IPhoneBookEntryDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["listId"] = this.listId;
-        data["title"] = this.title;
-        data["note"] = this.note;
+        data["phoneBookId"] = this.phoneBookId;
+        data["name"] = this.name;
+        data["number"] = this.number;
         return data; 
     }
 }
 
 export interface IPhoneBookEntryDto {
     id?: number;
-    listId?: number;
-    title?: string | undefined;
-    note?: string | undefined;
+    phoneBookId?: number;
+    name?: string | undefined;
+    number?: string | undefined;
 }
 
 export class CreatePhoneBookCommand implements ICreatePhoneBookCommand {

@@ -26,7 +26,7 @@ namespace Application.PhoneBook.Commands.UpdatePhoneBook
 
         public async Task<Unit> Handle(UpdatePhoneBookCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.PhoneBooks.FindAsync(request.Id, cancellationToken);
+            var entity = await _context.PhoneBooks.FindAsync(request.Id);
 
             if (entity == null)
             {

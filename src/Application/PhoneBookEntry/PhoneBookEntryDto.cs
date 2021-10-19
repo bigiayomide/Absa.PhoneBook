@@ -6,10 +6,10 @@ namespace Absa.Application.PhoneBookEntry
     {
         public int Id { get; set; }
 
-        public int ListId { get; set; }
+        public int PhoneBookId { get; set; }
 
-        public string Title { get; set; }
+        public string Name { get; set; }
 
-        public string Note { get; set; }
+        public string Number { get; set; }
     }
 }

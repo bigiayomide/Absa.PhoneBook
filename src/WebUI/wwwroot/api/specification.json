@@ -141,7 +141,7 @@
         "operationId": "PhoneBookEntry_GetTodoItemsWithPagination",
         "parameters": [
           {
-            "name": "ListId",
+            "name": "PhoneBookId",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -159,13 +159,22 @@
             "x-position": 2
           },
           {
+            "name": "SearchParameter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
             "name": "PageSize",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 4
           }
         ],
         "responses": {
@@ -765,15 +774,15 @@
             "type": "integer",
             "format": "int32"
           },
-          "listId": {
+          "phoneBookId": {
             "type": "integer",
             "format": "int32"
           },
-          "title": {
+          "name": {
             "type": "string",
             "nullable": true
           },
-          "note": {
+          "number": {
             "type": "string",
             "nullable": true
           }

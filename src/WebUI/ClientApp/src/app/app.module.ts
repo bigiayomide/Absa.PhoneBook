@@ -16,6 +16,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
 import { TokenComponent } from './token/token.component';
+import { PhonebookComponent } from './phonebook/phonebook.component';
+import { AppPaginationComponent } from './app-pagination/app-pagination.component';
+import { SearchInputComponent } from './search-input/search-input.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { TokenComponent } from './token/token.component';
     CounterComponent,
     FetchDataComponent,
     TodoComponent,
-    TokenComponent
+    TokenComponent,
+    PhonebookComponent,
+    AppPaginationComponent,
+    SearchInputComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

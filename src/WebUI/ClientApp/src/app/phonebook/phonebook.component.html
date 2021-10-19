@@ -1,0 +1,12 @@
+<app-search-input
+      placeholder="Search by name"
+      (setValue)="filterList($event)">
+</app-search-input>
+
+<ul>
+    <li *ngFor="let user of phonebookEntry" >{{ user.name }}</li>
+</ul>
+    
+<app-pagination [setPagination]="{'itemsCount': totalphonebook,'pageSize': 10}"
+(goToPage)="goToPage($event)">
+</app-pagination>

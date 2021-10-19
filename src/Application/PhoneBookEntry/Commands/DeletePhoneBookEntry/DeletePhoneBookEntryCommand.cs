@@ -23,7 +23,7 @@ namespace Absa.Application.TodoItems.Commands.DeletePhoneBookEntry
 
         public async Task<Unit> Handle(DeleteTodoItemCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.PhoneBookEntries.FindAsync(request.Id, cancellationToken);
+            var entity = await _context.PhoneBookEntries.FindAsync(request.Id);
 
             if (entity == null)
             {

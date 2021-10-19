@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +14,9 @@ namespace Absa.Application.PhoneBook.Queries
 {
     public class GetPhoneBookEntryWithPaginationQuery : IRequest<PaginatedList<PhoneBookEntryDto>>
     {
-        public int ListId { get; set; }
+        public int PhoneBookId { get; set; }
         public int PageNumber { get; set; } = 1;
+        public string SearchParameter { get; set; } = "";
         public int PageSize { get; set; } = 10;
     }
 
@@ -31,11 +33,18 @@ namespace Absa.Application.PhoneBook.Queries
 
         public async Task<PaginatedList<PhoneBookEntryDto>> Handle(GetPhoneBookEntryWithPaginationQuery request, CancellationToken cancellationToken)
         {
-            return await _context.PhoneBookEntries
-                // .Where(x => x.ListId == request.ListId)
-                .OrderBy(x => x.Name)
-                .ProjectTo<PhoneBookEntryDto>(_mapper.ConfigurationProvider)
-                .PaginatedListAsync(request.PageNumber, request.PageSize);
+
+            var query = _context.PhoneBookEntries
+                .Where(x => x.PhoneBookId == request.PhoneBookId);
+
+            if (!string.IsNullOrWhiteSpace(request.SearchParameter))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(request.SearchParameter.ToLower()));
+            }
+
+            return await query.OrderBy(x => x.Name)
+               .ProjectTo<PhoneBookEntryDto>(_mapper.ConfigurationProvider)
+               .PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }
 }
