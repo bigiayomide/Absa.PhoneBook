@@ -4,16 +4,11 @@ import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-input',
-  template: `
-    <input
-      type="text"
-      [placeholder]="placeholder"
-      (keyup)="updateSearch($event.target.value)"
-    />`,
-    styleUrls: ['./search-input.component.scss']
+  templateUrl:'./search-input.component.html',
+  styleUrls: ['./search-input.component.scss']
 })
 export class SearchInputComponent implements OnDestroy {
-  // Optionally, I have added a placeholder input for customization 
+
   @Input() readonly placeholder: string = '';
   @Output() setValue: EventEmitter<string> = new EventEmitter();
   private _searchSubject: Subject<string> = new Subject();

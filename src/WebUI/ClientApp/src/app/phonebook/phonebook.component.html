@@ -2,11 +2,33 @@
       placeholder="Search by name"
       (setValue)="filterList($event)">
 </app-search-input>
-
-<ul>
-    <li *ngFor="let user of phonebookEntry" >{{ user.name }}</li>
-</ul>
     
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+  <thead>
+    <tr >
+      <th class="th-sm">Name
+      </th>
+      <th class="th-sm">Number
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let phonebookEntry of phonebookEntry">
+      <td>{{ phonebookEntry.name }}</td>
+      <td>{{ phonebookEntry.number }}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Name
+      </th>
+      <th>Number
+      </th>
+    </tr>
+  </tfoot>
+</table>
+
 <app-pagination [setPagination]="{'itemsCount': totalphonebook,'pageSize': 10}"
 (goToPage)="goToPage($event)">
 </app-pagination>

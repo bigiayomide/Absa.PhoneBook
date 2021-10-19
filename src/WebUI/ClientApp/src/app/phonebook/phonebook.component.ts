@@ -40,11 +40,11 @@ export class PhonebookComponent implements OnInit {
     page: number = 1, searchParam: string = '' 
   ) {
     this._myService.getTodoItemsWithPagination(
-      1,page,searchParam, 10
+      3,page,searchParam, 10
     ).subscribe((response) => {
-      response.items
       this.phonebookEntry = response.items;
       this.totalphonebook = response.totalCount;
+      console.log(response);
     }, (error) => console.error(error));
   }
 }
