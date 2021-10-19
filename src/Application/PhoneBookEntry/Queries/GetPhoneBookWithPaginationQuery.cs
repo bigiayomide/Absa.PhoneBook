@@ -39,7 +39,8 @@ namespace Absa.Application.PhoneBook.Queries
 
             if (!string.IsNullOrWhiteSpace(request.SearchParameter))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(request.SearchParameter.ToLower()));
+                query = query.Where(x => x.Name.ToLower().Contains(request.SearchParameter.ToLower())
+                || x.Number.ToLower().Contains(request.SearchParameter.ToLower()));
             }
 
             return await query.OrderBy(x => x.Name)

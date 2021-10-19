@@ -1,34 +1,17 @@
-<div class="pagination" >
-      <span
-        *ngIf="currentPage !== 1"
-        (click)="setPage(currentPage - 1)"
-      >
-        &lt;
-      </span>
-      <ng-container *ngIf="pagesArray.length <= 10" >
-        <span
-          *ngFor="let page of pagesArray; let index = index"
+<nav aria-label="...">
+<ul class="pagination">
+    <li *ngIf="currentPage !== 1"
+        (click)="setPage(currentPage - 1)" class="page-item">
+      <button class="page-link">Previous</button>
+    </li>
+    <li *ngFor="let p of pagesArray; let index = index" class="page-item" [ngClass]="{ 'active': currentPage === index + 1 }"
+    ><button class="page-link" (click) ="setPage(index+1)" >{{ index + 1 }}</button>
+  </li>
+    <li  *ngFor="let page of pagesArray; let index = index"
           [ngClass]="{ 'active': currentPage === index + 1 }"
-          (click)="setPage(index + 1)"
-        >
-          {{ index + 1 }}
-        </span>
-      </ng-container>
-      <ng-container *ngIf="pagesArray.length > 10" >
-        <select
-          [ngModel]="currentPage"
-          (ngModelChange)="setPage($event.target.value)"
-        >
-          <option
-            *ngFor="let p of pagesArray; let index = index"
-            [value]="(index + 1)" >
-            {{ index + 1 }}
-          </option>
-        </select>
-      </ng-container>
-      <span 
-        *ngIf="currentPage !== pagesArray.length"
-        (click)="setPage(currentPage + 1)"
-      >
-        &gt;
-      </span>
+          (click)="setPage(index + 1)" class="page-item active">
+    <li *ngIf="currentPage !== pagesArray.length" class="page-item">
+      <button class="page-link" (click)="setPage(currentPage + 1)">Next</button>
+    </li>
+  </ul>
+</nav>

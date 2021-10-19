@@ -1,1 +1,10 @@
-<input type="text" [placeholder]="placeholder" (keyup)="updateSearch($event.target.value)"/>
+<div class="search-box">
+    <div class="row">
+            <div class="col-md-3">
+            <h5>Search All Fields</h5>
+        </div>
+        <div class="col-md-9">
+            <input  type="text" class="form-control" [placeholder]="placeholder" (keyup)="updateSearch($event.target.value)"/>
+        </div> 
+    </div>
+</div>
