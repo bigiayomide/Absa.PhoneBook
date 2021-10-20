@@ -12,13 +12,13 @@ namespace Absa.Application.PhoneBook
     {
         public PhoneBookDto()
         {
-            Items = new List<PhoneBookEntryDto>();
+            PhoneBookEntries = new List<PhoneBookEntryDto>();
         }
 
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public IList<PhoneBookEntryDto> Items { get; set; }
+        public IList<PhoneBookEntryDto> PhoneBookEntries { get; set; }
     }
 }

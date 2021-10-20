@@ -240,7 +240,7 @@ export class PhoneBookClient implements IPhoneBookClient {
 export interface IPhoneBookEntryClient {
     getTodoItemsWithPagination(phoneBookId: number | undefined, pageNumber: number | undefined, searchParameter: string | null | undefined, pageSize: number | undefined): Observable<PaginatedListOfPhoneBookEntryDto>;
     create(command: CreatePhoneBookEntryCommand): Observable<number>;
-    update(id: number, command: UpdatePhoneBookCommand): Observable<FileResponse>;
+    update(id: number, command: UpdatePhoneBookEntryCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
 }
 
@@ -371,7 +371,7 @@ export class PhoneBookEntryClient implements IPhoneBookEntryClient {
         return _observableOf<number>(<any>null);
     }
 
-    update(id: number, command: UpdatePhoneBookCommand): Observable<FileResponse> {
+    update(id: number, command: UpdatePhoneBookEntryCommand): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/PhoneBookEntry/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1154,7 +1154,7 @@ export interface IPhoneBookVm {
 export class PhoneBookDto implements IPhoneBookDto {
     id?: number;
     name?: string | undefined;
-    items?: PhoneBookEntryDto[] | undefined;
+    phoneBookEntries?: PhoneBookEntryDto[] | undefined;
 
     constructor(data?: IPhoneBookDto) {
         if (data) {
@@ -1169,10 +1169,10 @@ export class PhoneBookDto implements IPhoneBookDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(PhoneBookEntryDto.fromJS(item));
+            if (Array.isArray(_data["phoneBookEntries"])) {
+                this.phoneBookEntries = [] as any;
+                for (let item of _data["phoneBookEntries"])
+                    this.phoneBookEntries!.push(PhoneBookEntryDto.fromJS(item));
             }
         }
     }
@@ -1188,10 +1188,10 @@ export class PhoneBookDto implements IPhoneBookDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
+        if (Array.isArray(this.phoneBookEntries)) {
+            data["phoneBookEntries"] = [];
+            for (let item of this.phoneBookEntries)
+                data["phoneBookEntries"].push(item.toJSON());
         }
         return data; 
     }
@@ -1200,7 +1200,7 @@ export class PhoneBookDto implements IPhoneBookDto {
 export interface IPhoneBookDto {
     id?: number;
     name?: string | undefined;
-    items?: PhoneBookEntryDto[] | undefined;
+    phoneBookEntries?: PhoneBookEntryDto[] | undefined;
 }
 
 export class PhoneBookEntryDto implements IPhoneBookEntryDto {
@@ -1433,6 +1433,54 @@ export interface ICreatePhoneBookEntryCommand {
     phoneBookId?: number;
     number?: string | undefined;
     name?: string | undefined;
+}
+
+export class UpdatePhoneBookEntryCommand implements IUpdatePhoneBookEntryCommand {
+    id?: number;
+    name?: string | undefined;
+    phoneBookId?: number;
+    number?: string | undefined;
+
+    constructor(data?: IUpdatePhoneBookEntryCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.phoneBookId = _data["phoneBookId"];
+            this.number = _data["number"];
+        }
+    }
+
+    static fromJS(data: any): UpdatePhoneBookEntryCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdatePhoneBookEntryCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["phoneBookId"] = this.phoneBookId;
+        data["number"] = this.number;
+        return data; 
+    }
+}
+
+export interface IUpdatePhoneBookEntryCommand {
+    id?: number;
+    name?: string | undefined;
+    phoneBookId?: number;
+    number?: string | undefined;
 }
 
 export class PaginatedListOfTodoItemDto implements IPaginatedListOfTodoItemDto {

@@ -9,7 +9,7 @@
     "
   >
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">Absa.WebUI</a>
+      <a class="navbar-brand" [routerLink]="['/']">Absa PhoneBook</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -35,20 +35,13 @@
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/todo']">Todo</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/token']">JWT</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/phone-book']">Phone Book</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" href="/api" target="_blank">API</a>

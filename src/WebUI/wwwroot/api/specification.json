@@ -245,7 +245,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePhoneBookCommand"
+                "$ref": "#/components/schemas/UpdatePhoneBookEntryCommand"
               }
             }
           },
@@ -757,7 +757,7 @@
             "type": "string",
             "nullable": true
           },
-          "items": {
+          "phoneBookEntries": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -856,6 +856,28 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdatePhoneBookEntryCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneBookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
             "type": "string",
             "nullable": true
           }

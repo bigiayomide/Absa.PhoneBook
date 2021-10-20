@@ -48,7 +48,7 @@ namespace Absa.Infrastructure.Persistence
                     Name = "HR Departmennt",
                     PhoneBookEntries = {
                         new PhoneBookEntry { Name = "Huey Freeman", Number = "0730860932" },
-                        new PhoneBookEntry { Name = "Uncle Ruckus", Number = "07308645832" },
+                        new PhoneBookEntry { Name = "Uncle Ruckus", Number = "0730864583" },
                         new PhoneBookEntry { Name = "Tom Dubois", Number = "0730860987" },
                         new PhoneBookEntry { Name = "Robert FreeMan", Number = "0730861093" },
                         new PhoneBookEntry { Name = "Gin Rummy", Number = "0730864538" },

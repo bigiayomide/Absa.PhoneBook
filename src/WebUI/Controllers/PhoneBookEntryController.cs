@@ -3,9 +3,9 @@ using Absa.Application.Common.Models;
 using Absa.Application.Common.Security;
 using Absa.Application.PhoneBook.Queries;
 using Absa.Application.PhoneBookEntry;
+using Absa.Application.PhoneBookEntry.Commands.UpdatePhoneBookEntry;
 using Absa.Application.TodoItems.Commands.CreatePhoneBookEntry;
-using Application.PhoneBook.Commands.DeletePhoneBook;
-using Application.PhoneBook.Commands.UpdatePhoneBook;
+using Absa.Application.TodoItems.Commands.DeletePhoneBookEntry;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Absa.WebUI.Controllers
@@ -26,7 +26,7 @@ namespace Absa.WebUI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, UpdatePhoneBookCommand command)
+        public async Task<ActionResult> Update(int id, UpdatePhoneBookEntryCommand command)
         {
             if (id != command.Id)
             {
@@ -41,7 +41,7 @@ namespace Absa.WebUI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await Mediator.Send(new DeletePhoneBookCommand { Id = id });
+            await Mediator.Send(new DeletePhoneBookEntryCommand { Id = id });
 
             return NoContent();
         }

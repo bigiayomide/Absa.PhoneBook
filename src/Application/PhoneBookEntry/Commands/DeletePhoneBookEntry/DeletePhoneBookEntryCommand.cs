@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Absa.Application.TodoItems.Commands.DeletePhoneBookEntry
 {
-    public class DeleteTodoItemCommand : IRequest
+    public class DeletePhoneBookEntryCommand : IRequest
     {
         public int Id { get; set; }
     }
 
-    public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoItemCommand>
+    public class DeletePhoneBookEntryCommandHandler : IRequestHandler<DeletePhoneBookEntryCommand>
     {
         private readonly IApplicationDbContext _context;
 
-        public DeleteTodoItemCommandHandler(IApplicationDbContext context)
+        public DeletePhoneBookEntryCommandHandler(IApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Unit> Handle(DeleteTodoItemCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeletePhoneBookEntryCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.PhoneBookEntries.FindAsync(request.Id);
 
