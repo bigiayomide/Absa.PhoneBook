@@ -47,7 +47,7 @@
     <div class="col-sm-4">
       <div class="clearfix">
         <h2 class="float-left">Phone Books</h2>
-        <button class="btn btn-default float-right" title="Add List..."
+        <button class="btn btn-default float-right" title="Add PhoneBook..."
           (click)="showNewListModal(newListModalTemplate)">
           <fa-icon [icon]="faPlus"></fa-icon>
         </button>
@@ -59,9 +59,9 @@
             <div class="float-left">
                 {{ list.name }}
             </div>
-            <!-- <div class="float-right text-right">
-                <span class="badge badge-light">{{ remainingItems(list) }}</span>
-            </div> -->
+            <div class="float-right text-right">
+                <span class="badge badge-light">{{ totalEntries(list) }}</span>
+            </div>
           </div>
         </li>
       </ul>
@@ -78,10 +78,10 @@
         <li class="list-group-item" *ngFor="let item of selectedList.phoneBookEntries; index as i">
           <div class="d-flex">
             <div class="flex-fill">
-              <input id="{{ 'itemTitle' + i }}" *ngIf="item == selectedItem" type="text"
+              <input placeholder="Enter Name" id="{{ 'itemTitle' + i }}" *ngIf="item == selectedItem" type="text"
                 class="form-control item-input-control" [(ngModel)]="item.name" (keyup.enter)="updateItem(item, true)"
                 (blur)="updateItem(item)" autofocus="autofocus" />
-                <input id="{{ 'itemNumber' + i }}" *ngIf="item == selectedItem" type="text"
+                <input placeholder="Enter PhoneNumber"  id="{{ 'itemNumber' + i }}" *ngIf="item == selectedItem" type="text"
                 class="form-control item-input-control" [(ngModel)]="item.number" (keyup.enter)="updateItem(item, true)"
                 (blur)="updateItem(item)" autofocus="autofocus" />
               <div class="phonebook-item-title" *ngIf="item != selectedItem"
@@ -203,15 +203,15 @@
 
 <ng-template #newListModalTemplate>
   <div class="modal-header clearfix">
-    <h4 class="modal-title float-left">New List</h4>
+    <h4 class="modal-title float-left">New PhoneBook</h4>
     <button type="button" class="close float-right" aria-label="Close" (click)="newListCancelled()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="form-group">
-      <label for="title">Name</label>
-      <input type="text" class="form-control" id="name" placeholder="PhoneBook Name..." [(ngModel)]="newListEditor.title"
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" placeholder="PhoneBook Name..." [(ngModel)]="newListEditor.name"
         [ngClass]="{ 'is-invalid': newListEditor.error }" (keyup.enter)="addList()" />
       <div *ngIf="newListEditor.error" class="invalid-feedback">
         {{ newListEditor.error }}

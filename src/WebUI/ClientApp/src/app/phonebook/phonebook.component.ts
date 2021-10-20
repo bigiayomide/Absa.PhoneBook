@@ -149,6 +149,10 @@ export class PhonebookComponent {
         this.deleteListModalRef = this.modalService.show(template);
     }
 
+    totalEntries(list: PhoneBookDto): number {
+        return list.phoneBookEntries?.length;
+    }
+
     deleteListConfirmed(): void {
         this.listsClient.delete(this.selectedList.id).subscribe(
             () => {
