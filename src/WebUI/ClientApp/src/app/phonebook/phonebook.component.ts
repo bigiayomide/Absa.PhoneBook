@@ -171,29 +171,32 @@ export class PhonebookComponent {
         this.itemDetailsModalRef = this.modalService.show(template);
     }
 
-    // updateItemDetails(): void {
-    //     this.itemsClient.updateItemDetails(this.selectedItem.id, UpdatePhoneBookEntryCommand.fromJS(this.itemDetailsEditor))
-    //         .subscribe(
-    //             () => {
-    //                 if (this.selectedItem.phoneBookId != this.itemDetailsEditor.listId) {
-    //                     this.selectedList.items = this.selectedList.items.filter(i => i.id != this.selectedItem.id)
-    //                     let listIndex = this.vm.phoneBooks.findIndex(l => l.id == this.itemDetailsEditor.listId);
-    //                     this.selectedItem.phoneBookId = this.itemDetailsEditor.listId;
-    //                     this.vm.phoneBooks[listIndex].items.push(this.selectedItem);
-    //                 }
 
-    //                 this.itemDetailsModalRef.hide();
-    //                 this.itemDetailsEditor = {};
-    //             },
-    //             error => console.error(error)
-    //         );
-    // }
+    updatePhoneBookEntries(): void {
+        this.itemsClient.update(this.selectedItem.id, UpdatePhoneBookEntryCommand.fromJS(this.itemDetailsEditor))
+            .subscribe(
+                () => {
+                    if (this.selectedItem.phoneBookId != this.itemDetailsEditor.listId) {
+                        this.selectedList.phoneBookEntries = this.selectedList.phoneBookEntries.filter(i => i.id != this.selectedItem.id)
+                        let listIndex = this.vm.phoneBooks.findIndex(l => l.id == this.itemDetailsEditor.phoneBookId);
+                        this.selectedItem.phoneBookId = this.itemDetailsEditor.phoneBookId;
+                        this.vm.phoneBooks[listIndex].phoneBookEntries.push(this.selectedItem);
+                        debugger;
+                    }
+
+                    this.itemDetailsModalRef.hide();
+                    this.itemDetailsEditor = {};
+                },
+                error => console.error(error)
+            );
+    }
 
     addItem() {
         let item = PhoneBookEntryDto.fromJS({
             id: 0,
             phoneBookId: this.selectedList.id,
-            name: ''
+            name: '',
+            number:''
         });
 
         this.selectedList.phoneBookEntries.push(item);
@@ -215,7 +218,7 @@ export class PhonebookComponent {
         }
 
         if (item.id == 0) {
-            this.itemsClient.create(CreatePhoneBookEntryCommand.fromJS({ ...item, listId: this.selectedList.id }))
+            this.itemsClient.create(CreatePhoneBookEntryCommand.fromJS({ ...item, phoneBookId: this.selectedList.id }))
                 .subscribe(
                     result => {
                         item.id = result;
