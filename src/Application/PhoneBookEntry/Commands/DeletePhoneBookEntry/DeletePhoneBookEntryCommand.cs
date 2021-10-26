@@ -27,7 +27,7 @@ namespace Absa.Application.TodoItems.Commands.DeletePhoneBookEntry
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(TodoItem), request.Id);
+                throw new NotFoundException(nameof(Domain.Entities.PhoneBookEntry), request.Id);
             }
 
             _context.PhoneBookEntries.Remove(entity);

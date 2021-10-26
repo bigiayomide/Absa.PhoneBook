@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { CreatePhoneBookCommand, CreatePhoneBookEntryCommand, PhoneBookClient, 
   PhoneBookDto, PhoneBookEntryClient, PhoneBookEntryDto, 
   PhoneBookVm, UpdatePhoneBookCommand, UpdatePhoneBookEntryCommand } from '../web-api-client';
@@ -11,51 +12,13 @@ import { CreatePhoneBookCommand, CreatePhoneBookEntryCommand, PhoneBookClient,
   styleUrls: ['./phonebook.component.scss']
 })
 
-// export class PhonebookComponent implements OnInit {
-//   public phonebookEntry: Array<PhoneBookEntryDto>;
-//   public totalphonebook: number = 0;
-//   private _currentPage: number = 1;
-//   private _currentSearchValue: string = '';
-//   constructor(
-//     private _myService: PhoneBookEntryClient
-//   ) { }
-//   ngOnInit() {
-//     this._loadPhoneBook(
-//       this._currentPage,
-//       this._currentSearchValue
-//     );
-//   }
-//   public filterList(searchParam: string): void {
-//     this._currentSearchValue = searchParam;
-//     this._loadPhoneBook(
-//       this._currentPage,
-//       this._currentSearchValue
-//     );
-//   }
-//   public goToPage(page: number): void {
-//     this._currentPage = page;
-//     this._loadPhoneBook(
-//       this._currentPage,
-//       this._currentSearchValue
-//     );
-//   }
-
-//   private _loadPhoneBook(
-//     page: number = 1, searchParam: string = '' 
-//   ) {
-//     this._myService.getTodoItemsWithPagination(
-//       3,page,searchParam, 10
-//     ).subscribe((response) => {
-//       this.phonebookEntry = response.items;
-//       this.totalphonebook = response.totalCount;
-//       console.log(response);
-//     }, (error) => console.error(error));
-//   }
-// }
-
 export class PhonebookComponent {
 
+    public totalphonebook: number = 0;
+    private _currentPage: number = 1;
+    private _currentSearchValue: string = '';
     debug = false;
+    pagesize = 5 ;
 
     vm: PhoneBookVm;
 
@@ -63,6 +26,7 @@ export class PhonebookComponent {
     selectedItem: PhoneBookEntryDto;
 
     newListEditor: any = {};
+    newItemEditor: any = {};
     listOptionsEditor: any = {};
     itemDetailsEditor: any = {};
 
@@ -70,20 +34,26 @@ export class PhonebookComponent {
     listOptionsModalRef: BsModalRef;
     deleteListModalRef: BsModalRef;
     itemDetailsModalRef: BsModalRef;
+    newItemModalRef : BsModalRef;
 
     faPlus = faPlus;
     faEllipsisH = faEllipsisH;
 
-    constructor(private listsClient: PhoneBookClient, private itemsClient: PhoneBookEntryClient, private modalService: BsModalService) {
+    constructor(private listsClient: PhoneBookClient, private toastService: ToastrService, private itemsClient: PhoneBookEntryClient, private modalService: BsModalService) {
         listsClient.get().subscribe(
             result => {
                 this.vm = result;
                 if (this.vm.phoneBooks.length) {
                     this.selectedList = this.vm.phoneBooks[0];
+                    this._loadPhoneBook(
+                        this._currentPage,
+                        this._currentSearchValue
+                    );
                 }
             },
             error => console.error(error)
         );
+
     }
 
     showNewListModal(template: TemplateRef<any>): void {
@@ -108,14 +78,16 @@ export class PhonebookComponent {
                 list.id = result;
                 this.vm.phoneBooks.push(list);
                 this.selectedList = list;
+                this._loadPhoneBook();
                 this.newListModalRef.hide();
                 this.newListEditor = {};
+                this.toastService.success('Create succeeded.');
             },
             error => {
                 let errors = JSON.parse(error.response);
 
-                if (errors && errors.Title) {
-                    this.newListEditor.error = errors.Title[0];
+                if (errors && errors.name) {
+                    this.newListEditor.error = errors.name[0];
                 }
 
                 setTimeout(() => document.getElementById("name").focus(), 250);
@@ -150,7 +122,7 @@ export class PhonebookComponent {
     }
 
     totalEntries(list: PhoneBookDto): number {
-        return list.phoneBookEntries?.length;
+        return list.phoneBookEntriesCount;
     }
 
     deleteListConfirmed(): void {
@@ -158,13 +130,14 @@ export class PhonebookComponent {
             () => {
                 this.deleteListModalRef.hide();
                 this.vm.phoneBooks = this.vm.phoneBooks.filter(t => t.id != this.selectedList.id)
+                this._loadPhoneBook();
                 this.selectedList = this.vm.phoneBooks.length ? this.vm.phoneBooks[0] : null;
+                this.toastService.success('Delete succeeded.');
             },
             error => console.error(error)
         );
     }
 
-    // Items
 
     showItemDetailsModal(template: TemplateRef<any>, item: PhoneBookEntryDto): void {
         this.selectedItem = item;
@@ -187,7 +160,7 @@ export class PhonebookComponent {
                         this.vm.phoneBooks[listIndex].phoneBookEntries.push(this.selectedItem);
                         debugger;
                     }
-
+                    this.toastService.success('Update succeeded.');
                     this.itemDetailsModalRef.hide();
                     this.itemDetailsEditor = {};
                 },
@@ -208,6 +181,31 @@ export class PhonebookComponent {
         this.editItem(item, 'itemTitle' + index);
     }
 
+    createItem(){
+    this.newItemEditor.phoneBookId = this.selectedList.id;
+     this.itemsClient.create(this.newItemEditor)
+        .subscribe(
+            result => {
+                this.newItemEditor.id = result;
+                this._loadPhoneBook();
+                this.toastService.success('Create succeeded.');
+                this.newItemCancelled();
+
+            },
+            error => console.error(error)
+        );
+    }
+
+    showNewItemModal(template: TemplateRef<any>): void {
+        this.newItemModalRef = this.modalService.show(template);
+        setTimeout(() => document.getElementById("name").focus(), 250);
+    }
+
+    newItemCancelled(): void {
+        this.newItemModalRef.hide();
+        this.newListEditor = {};
+    }
+
     editItem(item: PhoneBookEntryDto, inputId: string): void {
         this.selectedItem = item;
         setTimeout(() => document.getElementById(inputId).focus(), 100);
@@ -216,7 +214,7 @@ export class PhonebookComponent {
     updateItem(item: PhoneBookEntryDto, pressedEnter: boolean = false): void {
         let isNewItem = item.id == 0;
 
-        if (!item.name.trim()) {
+        if (!item.name.trim()|| !item.number.trim()) {
             this.deleteItem(item);
             return;
         }
@@ -232,7 +230,7 @@ export class PhonebookComponent {
         } else {
             this.itemsClient.update(item.id, UpdatePhoneBookEntryCommand.fromJS(item))
                 .subscribe(
-                    () => console.log('Update succeeded.'),
+                    () => this.toastService.success('Update succeeded.'),
                     error => console.error(error)
                 );
         }
@@ -260,4 +258,35 @@ export class PhonebookComponent {
             );
         }
     }
+
+ private _loadPhoneBook(
+    page: number = 1, searchParam: string = '',
+    Phonebook:PhoneBookDto = null
+  ) {
+      if(Phonebook!=null)
+      {
+        this.selectedList = Phonebook
+      }
+    this.itemsClient.getTodoItemsWithPagination(
+      this.selectedList.id,page,searchParam, this.pagesize
+    ).subscribe((response) => {
+      this.selectedList.phoneBookEntries = response.items;
+      this.totalphonebook = response.totalCount;
+    }, (error) => console.error(error));
+  }
+
+    public filterList(searchParam: string): void {
+    this._currentSearchValue = searchParam;
+    this._loadPhoneBook(
+      this._currentPage,
+      this._currentSearchValue
+    );
+  }
+  public goToPage(page: number): void {
+    this._currentPage = page;
+    this._loadPhoneBook(
+      this._currentPage,
+      this._currentSearchValue
+    );
+  }
 }

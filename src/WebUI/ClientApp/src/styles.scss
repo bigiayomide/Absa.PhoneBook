@@ -1,4 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+// regular style toast 
+@import '~ngx-toastr/toastr';
+ 
+ 
+// if you'd like to use it without importing all of bootstrap it requires 
 
 /* Provide sufficient contrast against white background */
 a {

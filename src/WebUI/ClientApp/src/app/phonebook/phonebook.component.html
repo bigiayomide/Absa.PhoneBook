@@ -1,9 +1,6 @@
 <!-- 
 
-<app-search-input
-      placeholder="Search by name or Number"
-      (setValue)="filterList($event)">
-</app-search-input>
+
     
 
 <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -48,13 +45,13 @@
       <div class="clearfix">
         <h2 class="float-left">Phone Books</h2>
         <button class="btn btn-default float-right" title="Add PhoneBook..."
-          (click)="showNewListModal(newListModalTemplate)">
+          (click)="showNewListModal(newItemModalTemplate)">
           <fa-icon [icon]="faPlus"></fa-icon>
         </button>
       </div>
       <ul class="list-group">
         <li *ngFor="let list of vm.phoneBooks; index as i" class="list-group-item"
-          [ngClass]="{ 'active': selectedList == list }" (click)="selectedList = list">
+          [ngClass]="{ 'active': selectedList == list }" (click)="_loadPhoneBook(1,'',list)">
           <div class="clearfix">
             <div class="float-left">
                 {{ list.name }}
@@ -74,37 +71,62 @@
           <fa-icon [icon]="faEllipsisH"></fa-icon>
         </button>
       </div>
+      <div>
+          <app-search-input placeholder="Search by name or Number" (setValue)="filterList($event)">
+          </app-search-input>
+          <button class="btn btn-default float-right" title="Add PhoneBook..."
+          (click)="showNewItemModal(newItemModalTemplate)">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+      </div>
       <ul id="phonebook-items" class="list-group mb-2">
-        <li class="list-group-item" *ngFor="let item of selectedList.phoneBookEntries; index as i">
-          <div class="d-flex">
-            <div class="flex-fill">
-              <input placeholder="Enter Name" id="{{ 'itemTitle' + i }}" *ngIf="item == selectedItem" type="text"
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+  <thead>
+    <tr >
+      <th class="th-sm">Name
+      </th>
+      <th class="th-sm">Number
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of selectedList.phoneBookEntries; index as i">
+      <td><input placeholder="Enter Name" id="{{ 'itemTitle' + i }}" *ngIf="item == selectedItem" type="text"
                 class="form-control item-input-control" [(ngModel)]="item.name" (keyup.enter)="updateItem(item, true)"
                 (blur)="updateItem(item)" autofocus="autofocus" />
-                <input placeholder="Enter PhoneNumber"  id="{{ 'itemNumber' + i }}" *ngIf="item == selectedItem" type="text"
-                class="form-control item-input-control" [(ngModel)]="item.number" (keyup.enter)="updateItem(item, true)"
-                (blur)="updateItem(item)" autofocus="autofocus" />
-              <div class="phonebook-item-title" *ngIf="item != selectedItem"
+                            <div class="phonebook-item-title" *ngIf="item != selectedItem"
                 (click)="editItem(item, 'itemTitle' + i)" class="form-control item-input-control">
                 <span>{{ item.name }}</span>
-              </div>
-              <div class="phonebook-item-title" *ngIf="item != selectedItem"
+              </div></td>
+      <td><input placeholder="Enter PhoneNumber"  id="{{ 'itemNumber' + i }}" *ngIf="item == selectedItem" type="text"
+                class="form-control item-input-control" [(ngModel)]="item.number" (keyup.enter)="updateItem(item, true)"
+                (blur)="updateItem(item)" autofocus="autofocus" />
+                            <div class="phonebook-item-title" *ngIf="item != selectedItem"
                 (click)="editItem(item, 'itemNumber' + i)" class="form-control item-input-control">
                 <span>{{ item.number }}</span>
-              </div>
-            </div>
-            <div class="phonebook-item-commands">
+                
+              </div></td>
+
+              <td>
+                <div class="phonebook-item-commands">
               <button *ngIf="item.id != 0" (click)="showItemDetailsModal(itemDetailsModalTemplate, item)"
                 class="btn btn-default btn-xs" role="button">
                 <fa-icon [icon]="faEllipsisH"></fa-icon>
               </button>
             </div>
-          </div>
-        </li>
-        <li class="list-group-item" (click)="addItem()">
+              </td>
+    </tr>
+  </tbody>
+  <tfoot>
+         <!-- <li class="list-group-item" (click)="addItem()">
           <button class="btn btn-default">Add Item...</button>
-        </li>
+        </li> -->
+  </tfoot>
+</table>
       </ul>
+      <app-pagination [setPagination]="{'itemsCount': totalphonebook,'pageSize': pagesize}" 
+        (goToPage)="goToPage($event)">
+      </app-pagination> 
     </div>
   </div>
 </div>
@@ -225,6 +247,43 @@
     <div class="text-right">
       <button class="btn btn-default" (click)="newListCancelled()">Cancel</button>
       <button class="btn btn-primary" (click)="addList()">Create</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #newItemModalTemplate>
+  <div class="modal-header clearfix">
+    <h4 class="modal-title float-left">New Entry for {{selectedList.name}}</h4>
+    <button type="button" class="close float-right" aria-label="Close" (click)="newItemCancelled()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Name..." [(ngModel)]="newItemEditor.name"
+        [ngClass]="{ 'is-invalid': newItemEditor.error }"  />
+      <div *ngIf="newItemEditor.error" class="invalid-feedback">
+        {{ newItemEditor.error }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="name">Number</label>
+      <input type="text" class="form-control" id="name" placeholder="Number..." [(ngModel)]="newItemEditor.number"
+        [ngClass]="{ 'is-invalid': newItemEditor.error }" />
+      <div *ngIf="newItemEditor.error" class="invalid-feedback">
+        {{ newItemEditor.error }}
+      </div>
+      </div>
+    <div *ngIf="debug">
+      <pre>{{ newItemEditor | json }}</pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-right">
+      <button class="btn btn-default" (click)="newItemCancelled()">Cancel</button>
+      <button class="btn btn-primary" (click)="createItem()">Create</button>
     </div>
   </div>
 </ng-template>

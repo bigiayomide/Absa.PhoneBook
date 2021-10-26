@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Absa.Application.Common.Interfaces;
 using Absa.Application.Common.Security;
-using Absa.Application.TodoLists.Commands.PurgeTodoLists;
 using MediatR;
 
 namespace Application.PhoneBook.Commands.PurgePhoneBook
@@ -25,7 +24,7 @@ namespace Application.PhoneBook.Commands.PurgePhoneBook
 
         public async Task<Unit> Handle(PurgePhoneBookCommand request, CancellationToken cancellationToken)
         {
-            _context.TodoLists.RemoveRange(_context.TodoLists);
+            _context.PhoneBooks.RemoveRange(_context.PhoneBooks);
 
             await _context.SaveChangesAsync(cancellationToken);
 

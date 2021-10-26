@@ -30,10 +30,6 @@ namespace Absa.Infrastructure.Persistence
             _domainEventService = domainEventService;
             _dateTime = dateTime;
         }
-
-        public DbSet<TodoItem> TodoItems { get; set; }
-
-        public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<PhoneBookEntry> PhoneBookEntries { get; set; }
 
         public DbSet<PhoneBook> PhoneBooks { get; set; }
@@ -58,8 +54,6 @@ namespace Absa.Infrastructure.Persistence
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            await DispatchEvents();
-
             return result;
         }
 
@@ -68,22 +62,6 @@ namespace Absa.Infrastructure.Persistence
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);
-        }
-
-        private async Task DispatchEvents()
-        {
-            while (true)
-            {
-                var domainEventEntity = ChangeTracker.Entries<IHasDomainEvent>()
-                    .Select(x => x.Entity.DomainEvents)
-                    .SelectMany(x => x)
-                    .Where(domainEvent => !domainEvent.IsPublished)
-                    .FirstOrDefault();
-                if (domainEventEntity == null) break;
-
-                domainEventEntity.IsPublished = true;
-                await _domainEventService.Publish(domainEventEntity);
-            }
         }
     }
 }

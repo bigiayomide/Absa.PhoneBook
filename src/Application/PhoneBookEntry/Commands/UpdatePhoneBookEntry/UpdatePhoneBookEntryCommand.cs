@@ -39,7 +39,7 @@ namespace Absa.Application.PhoneBookEntry.Commands.UpdatePhoneBookEntry
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(TodoItem), request.Id);
+                throw new NotFoundException(nameof(Domain.Entities.PhoneBookEntry), request.Id);
             }
 
             entity.Name = request.Name;

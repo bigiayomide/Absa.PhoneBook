@@ -7,9 +7,6 @@ namespace Absa.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
-        DbSet<TodoList> TodoLists { get; set; }
-
-        DbSet<TodoItem> TodoItems { get; set; }
 
         DbSet<Absa.Domain.Entities.PhoneBook> PhoneBooks { get; set; }
 

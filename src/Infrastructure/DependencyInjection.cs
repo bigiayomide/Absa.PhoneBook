@@ -1,5 +1,4 @@
 ﻿using Absa.Application.Common.Interfaces;
-using Absa.Infrastructure.Files;
 using Absa.Infrastructure.Identity;
 using Absa.Infrastructure.Persistence;
 using Absa.Infrastructure.Services;
@@ -42,7 +41,6 @@ namespace Absa.Infrastructure
 
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIdentityService, IdentityService>();
-            services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

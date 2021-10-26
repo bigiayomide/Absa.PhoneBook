@@ -1,7 +1,5 @@
 ﻿using Absa.Application.Common.Exceptions;
 using Absa.Application.Common.Interfaces;
-using Absa.Domain.Entities;
-using Absa.Domain.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Absa.Application.Common.Interfaces;
 using Absa.Application.PhoneBook;
+using Absa.Application.PhoneBookEntry;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -30,11 +31,19 @@ namespace Application.PhoneBook.Queries
         {
             return new PhoneBookVm
             {
+
                 PhoneBooks = await _context.PhoneBooks
                     .AsNoTracking()
-                    .ProjectTo<PhoneBookDto>(_mapper.ConfigurationProvider)
+                    .Select(x => new PhoneBookDto()
+                    {
+                        Name = x.Name,
+                        Id = x.Id,
+                        PhoneBookEntriesCount = x.PhoneBookEntries.Count,
+                        PhoneBookEntries = _mapper.Map<List<PhoneBookEntryDto>>(x.PhoneBookEntries)
+                    })
                     .OrderBy(t => t.Name)
                     .ToListAsync(cancellationToken)
+
             };
 
         }
