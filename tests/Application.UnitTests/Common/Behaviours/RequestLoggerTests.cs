@@ -1,16 +1,16 @@
 ﻿using Absa.Application.Common.Behaviours;
 using Absa.Application.Common.Interfaces;
 using Absa.Application.PhoneBook.Commands.CreatePhoneBook;
-using Absa.Application.TodoItems.Commands.CreatePhoneBookEntry;
-using Absa.Application.TodoItems.Commands.CreateTodoItem;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System.Threading;
 using System.Threading.Tasks;
+using Absa.Application.PhoneBookEntry.Commands.CreatePhoneBookEntry;
 
 namespace Absa.Application.UnitTests.Common.Behaviours
 {
+    [TestFixture]
     public class RequestLoggerTests
     {
         private readonly Mock<ILogger<CreatePhoneBookEntryCommand>> _logger;

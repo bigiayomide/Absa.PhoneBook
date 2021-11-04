@@ -10,12 +10,13 @@ namespace Absa.Application.Common.Mappings
         public MappingProfile()
         {
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+            // CreateMap<Absa.Domain.Entities.PhoneBook, PhoneBook.PhoneBookDto>();
         }
 
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i => 
+                .Where(t => t.GetInterfaces().Any(i =>
                     i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
                 .ToList();
 
@@ -23,9 +24,9 @@ namespace Absa.Application.Common.Mappings
             {
                 var instance = Activator.CreateInstance(type);
 
-                var methodInfo = type.GetMethod("Mapping") 
+                var methodInfo = type.GetMethod("Mapping")
                     ?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
-                
+
                 methodInfo?.Invoke(instance, new object[] { this });
 
             }

@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Absa.Application.TodoItems.Commands.DeletePhoneBookEntry
+namespace Absa.Application.PhoneBookEntry.Commands.DeletePhoneBookEntry
 {
     public class DeletePhoneBookEntryCommand : IRequest
     {

@@ -1,7 +1,6 @@
-﻿using Absa.Application.TodoItems.Commands.CreatePhoneBookEntry;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Absa.Application.TodoItems.Commands.CreatePhoneBookEntry
+namespace Absa.Application.PhoneBookEntry.Commands.CreatePhoneBookEntry
 {
     public class CreatePhoneBookEntryCommandValidator : AbstractValidator<CreatePhoneBookEntryCommand>
     {

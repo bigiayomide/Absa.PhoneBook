@@ -4,8 +4,8 @@ using Absa.Application.Common.Security;
 using Absa.Application.PhoneBook.Queries;
 using Absa.Application.PhoneBookEntry;
 using Absa.Application.PhoneBookEntry.Commands.UpdatePhoneBookEntry;
-using Absa.Application.TodoItems.Commands.CreatePhoneBookEntry;
-using Absa.Application.TodoItems.Commands.DeletePhoneBookEntry;
+using Absa.Application.PhoneBookEntry.Commands.CreatePhoneBookEntry;
+using Absa.Application.PhoneBookEntry.Commands.DeletePhoneBookEntry;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Absa.WebUI.Controllers

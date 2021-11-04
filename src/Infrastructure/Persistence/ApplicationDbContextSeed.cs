@@ -1,8 +1,6 @@
 ﻿using Absa.Domain.Entities;
-using Absa.Domain.ValueObjects;
 using Absa.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

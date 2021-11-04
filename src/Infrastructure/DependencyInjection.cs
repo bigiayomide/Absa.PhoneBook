@@ -1,7 +1,6 @@
 ﻿using Absa.Application.Common.Interfaces;
 using Absa.Infrastructure.Identity;
 using Absa.Infrastructure.Persistence;
-using Absa.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +28,6 @@ namespace Absa.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
-            services.AddScoped<IDomainEventService, DomainEventService>();
 
             services
                 .AddDefaultIdentity<ApplicationUser>()
@@ -39,7 +37,6 @@ namespace Absa.Infrastructure
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddAuthentication()

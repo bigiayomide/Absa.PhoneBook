@@ -6,7 +6,6 @@ using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,17 +16,14 @@ namespace Absa.Infrastructure.Persistence
     {
         private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;
-        private readonly IDomainEventService _domainEventService;
 
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions,
             ICurrentUserService currentUserService,
-            IDomainEventService domainEventService,
             IDateTime dateTime) : base(options, operationalStoreOptions)
         {
             _currentUserService = currentUserService;
-            _domainEventService = domainEventService;
             _dateTime = dateTime;
         }
         public DbSet<PhoneBookEntry> PhoneBookEntries { get; set; }

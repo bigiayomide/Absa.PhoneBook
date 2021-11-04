@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Absa.Application.TodoItems.Commands.CreatePhoneBookEntry
+namespace Absa.Application.PhoneBookEntry.Commands.CreatePhoneBookEntry
 {
     public class CreatePhoneBookEntryCommand : IRequest<int>
     {
